@@ -34,13 +34,9 @@ class Controller_Home extends Controller_Template {
 		$data['title'] = $messages[array_rand($messages)];
 
         // Set a HTTP 404 output header
-        $this->template->title = 'Error 404 - '.$data['title'];
-        $this->template->content = View::factory('404', $data);
-        $this->response->status = 404;
-		
-		
-		//$this->response->body = View::factory('404', $data);
-        
+        $this->title = 'Error 404 - '.$data['title'];
+        $this->content = '404';
+        $this->response->status = 404;        
 	}
 	
 	//move this to an other controller??
