@@ -5,7 +5,7 @@
         <title>HyperLivre<?php echo isset($title) ? ' - ' . $title : null; ?></title>
         <?php echo Asset::css(array('screen.css')); ?>
     </head>
-    <body <?php echo isset($page) ? 'class="' . $page . '"' : ''; ?>>
+    <body <?php echo isset($page_id) ? 'id="' . $page_id . '"' : ''; ?>>
         <div class="header">
             <!-- Menu -->
             <ul class="menu">

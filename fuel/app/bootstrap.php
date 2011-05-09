@@ -17,6 +17,7 @@ Fuel::$encoding = 'UTF-8';
 Autoloader::add_classes(array(
 	// Add classes you want to override here
 	// Example: 'View' => APPPATH.'classes/view.php',
+	'Controller_Template' => APPPATH.'classes/controller/template.php',
 ));
 
 // Register the autoloader
