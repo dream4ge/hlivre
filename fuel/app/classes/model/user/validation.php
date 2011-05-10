@@ -40,6 +40,33 @@ class Model_User_Validation
 		return static::$_common_rules[$field];
 	}
 
+	public static function login()
+	{
+		return Fieldset::factory('login_user')
+				->add_model('Model_User_Validation', null, 'set_login_form')
+				->repopulate();
+	}
+
+	public static function set_login_form(Fieldset $form, $user = null)
+	{
+		$form->add('username', 'Username',
+				array(	'id' => 'username',
+						'type' => 'text',
+						'value' => !empty($user) ? $user->username : ''),
+				static::get_common_rules('username'));
+
+
+		$form->add('password', 'Password',
+				array(	'id' => 'password',
+						'type' => 'password',
+						'value' => !empty($user) ? $user->password : ''),
+				static::get_common_rules('password'));
+
+		$form->add('submit', null,
+				array(	'type' => 'submit',
+						'value' => 'Login'));
+	}
+
 	public static function signup()
 	{
 		return Fieldset::factory('signup_user')
@@ -122,29 +149,5 @@ class Model_User_Validation
 			return ($count == 0);
 		}
     }
-
-	/*
-	public function _validation_unique($value, $params, $updated_id = false)
-    {
-        list($model, $field) = explode('.', $params);
-		$model = 'Model_'.ucfirst(strtolower($model));
-		$table = $model::table();
-		$field = strtolower($field);
-		$value = mb_strtolower($value, 'utf-8'); //slower conversion method
-
-		if($updated_id)
-		{
-			$same = $model::find()->where($field, '=', $value)->get_one();
-			$id = $this->input('id'); print_r($this->input());
-			return ($id == $updated_id);
-		}
-		else
-		{
-			$count = $model::find()->where($field, '=', $value)->count();
-			return ($count == 0);
-		}
-    }
-
-*/
 
 }

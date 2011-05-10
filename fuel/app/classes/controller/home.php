@@ -22,7 +22,7 @@ class Controller_Home extends Controller_Template {
 		$this->title = 'Welcome';
 	}
 
-	
+
 
 	/*
 	 $form = Fieldset::factory('edit_user')
@@ -83,39 +83,25 @@ class Controller_Home extends Controller_Template {
             Response::redirect('dashboard');
         }
 
-		$val = Validation::factory('login_user');
-        $val->add('username', 'Username')
-			->add_rule('required')
-			->add_rule('min_length', 3)
-			->add_rule('max_length', 20)
-			->add_rule('trim')
-			->add_rule('valid_string', array('alpha', 'numeric', 'dashes', 'dots'));
-
-
-		$val->add('password', 'Password')
-			->add_rule('required')
-			->add_rule('min_length', 3)
-			->add_rule('max_length', 20)
-			->add_rule('trim')
-			->add_rule('valid_string',
-				array('utf8', 'alpha', 'numeric', 'spaces', 'punctuation', 'dashes'));
-
-        if ($val->run())
+		$form = Model_User_Validation::login();
+        if ($form->validation()->run())
         {
-            if (Auth::instance()->login($val->validated('username'), $val->validated('password')))
+            if (Auth::instance()
+					->login(	$form->validated('username'),
+								$form->validated('password')))
             {
-                Response::redirect('home');
+				Session::set_flash('user', 'Welcome back, '. $form->validated('username').' !');
+                Response::redirect('/');
             }
 			else
 			{
 				Session::set_flash('error', 'Incorrect username or password.');
-
 				Response::redirect('home/login');
 			}
         }
 
-        $this->title = 'Login';
-		$this->data['val'] = Validation::instance('login_user');
+		$this->title = 'Login';
+		$this->data['form'] = $form;
 	}
 
 	public function action_logout()
