@@ -6,9 +6,9 @@ abstract class Controller_Template extends Fuel\Core\Controller_Template {
 	protected $page_id = '';
 	protected $content = '';
 	protected $data = array();
-	
 
-	public function router($method = 'index', $args)
+
+	public function router($method = 'index', $args = null)
 	{
 		$full_method = 'action_'.$method;
 		if ( ! method_exists($this, $full_method))
@@ -19,10 +19,10 @@ abstract class Controller_Template extends Fuel\Core\Controller_Template {
 		$class_array = explode('_', get_class($this));
 		unset($class_array[0]);
 		$class_array = array_map("strtolower", $class_array);
-		
+
 		$this->page_id = implode('_', $class_array);
 		$this->content = implode(DS, $class_array).DS.$method;
-		
+
 		return call_user_func_array(array($this, $full_method), $args);
 	}
 
@@ -30,7 +30,7 @@ abstract class Controller_Template extends Fuel\Core\Controller_Template {
 	{
 		if ( ! empty($this->content))
 		{
-			$this->template->content = View::factory($this->content, $this->data)
+			$this->template->content = View::factory($this->content, $this->data, false)
 				->set('title', $this->title, false)
 				->set('page_id', $this->page_id, false);
 		}
@@ -38,13 +38,20 @@ abstract class Controller_Template extends Fuel\Core\Controller_Template {
 		parent::after();
 	}
 
+	/**
+	 * The 404 action for the application.
+	 *
+	 * @access  public
+	 * @return  void
+	 */
 	public function action_404()
 	{
 		$messages = array('Aw, no! Damn thing', 'Bloody Hell!', 'Uh Oh!', 'Nope, not here.', 'Huh?');
 		$this->title = $messages[array_rand($messages)];
 
-        // Set a HTTP 404 output header
+        // set a HTTP 404 output header
         $this->response->status = 404;
+		// redifine the view default name
         $this->content = '404';
 	}
 }
