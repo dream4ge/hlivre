@@ -9,17 +9,15 @@
         <div class="header">
             <!-- Menu -->
             <ul class="menu">
-				<?php if (Auth::check()): ?>
-					<li><?php echo Html::anchor('notes', 'My Notes'); ?></li>
-					<li><?php echo Html::anchor('home/logout', 'Logout'); ?></li>
-				<?php else: ?>
-					<li><div class="wrap"><?php echo Html::anchor('home/login', 'Login'); ?></div></li>
-					<li><div class="wrap"><?php echo Html::anchor('home/signup', 'Sign Up'); ?></div></li>
-				<?php endif; ?>
+				<li><?php echo Html::anchor('admin/dashboard', 'Dashboard'); ?></li>
+				<li><?php echo Html::anchor('admin/notes', 'Notes'); ?></li>
+				<li><?php echo Html::anchor('admin/concepts', 'Concepts'); ?></li>
+				<li><?php echo Html::anchor('admin/users', 'Users'); ?></li>
+				<li><?php echo Html::anchor('home/logout', 'Logout'); ?></li>
             </ul>
 
             <div class="logo">
-				<?php echo Asset::img(array('logo.gif')); ?>
+				<?php echo Asset::img(array('admin/admin-logo.gif')); ?>
             </div>
 
 			<!-- Messages -->
@@ -52,7 +50,7 @@
 
             <!-- Sidebar -->
             <div id="sidebar">
-                <p>lorem ipsum</p>
+                <p>admin sidebar</p>
             </div>
 
         </div>

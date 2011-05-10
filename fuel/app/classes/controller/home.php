@@ -21,7 +21,7 @@ class Controller_Home extends Controller_Template {
 	{
 		$this->title = 'Welcome';
 	}
-	
+
 
 	//TODO move this to an other controller??
 	public function action_signup()
@@ -57,7 +57,7 @@ class Controller_Home extends Controller_Template {
 	{
 		if (Auth::check())
         {
-            Response::redirect('dashboard');
+            Response::redirect('/');
         }
 
 		$form = Model_User_Validation::login();

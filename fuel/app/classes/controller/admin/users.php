@@ -1,6 +1,6 @@
 <?php
 
-class Controller_Admin_Users extends Controller
+class Controller_Admin_Users extends Controller_Admin 
 {
 
 	public function before() {
@@ -8,7 +8,9 @@ class Controller_Admin_Users extends Controller
 	}
 
 	public function action_index($show = 'all', $offset = 0) {
-		$view = ViewModel::factory('Admin_Users', 'show_users');
+	
+		$this->title = 'Admin users Index'
+		/*$view = ViewModel::factory('Admin_Users', 'show_users');
 		Pagination::$current_page = $offset;
 
 		if ($show === 'admin' || $show == 100)
@@ -26,6 +28,7 @@ class Controller_Admin_Users extends Controller
 			$view->group = 'all';
 			$view->show = 'all';
 		}
+		*/
 	}
 
 	public function action_edit($id) {
