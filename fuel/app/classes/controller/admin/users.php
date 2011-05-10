@@ -1,50 +1,50 @@
 <?php
 
-class Controller_Admin_Users extends Controller_Admin 
+class Controller_Admin_Users extends Controller_Admin
 {
 
-	public function before() {
+	public function before()
+	{
 		parent::before();
 	}
 
-	public function action_index($show = 'all', $offset = 0) {
-	
-		$this->title = 'Admin users Index'
-		/*$view = ViewModel::factory('Admin_Users', 'show_users');
-		Pagination::$current_page = $offset;
+	public function action_index($filter = 'all', $offset = 0)
+	{
+		$group = ($filter === 'all') ? 'all' : Auth::group()->get_group($filter);
+		$this->data['total_users'] = Model_User::count_users($group);
 
-		if ($show === 'admin' || $show == 100)
-		{
-			$view->group = 100;
-			$view->show = 'admin';
-		}
-		else if ($show === 'regular' || $show == 1)
-		{
-			$view->group = 1;
-			$view->show = 'regular';
-		}
-		else
-		{
-			$view->group = 'all';
-			$view->show = 'all';
-		}
-		*/
+		Pagination::$current_page = $offset;
+		Pagination::set_config(array(
+			'pagination_url' => 'admin/users/index/'.$group.'/',
+			'per_page' => 10,
+			'total_items' => $this->data['total_users'],
+			'num_links' => 3,
+			'uri_segment' => 5
+		));
+
+		$this->title = 'Admin Users Index';
+
+		$this->data['filter'] = $filter;
+		$this->data['users'] =
+				Model_User::get_users_by_group(
+						$group, Pagination::$offset, Pagination::$per_page);
 	}
 
-	public function action_edit($id) {
-
+	public function action_edit($id)
+	{
 		if (empty($id) || !$user = Model_User::find($id))
 		{
 			Response::redirect('admin/users');
 		}
 
-		$form = Fieldset::factory('edit_user')
-				->add_model('View_Admin_Users', $user, 'set_edit_form')
-				->repopulate();
+		$form = Model_User_Validation::edit($user);
+        if ($form->validation()->run())
+        {
+			$user->username = $form->validated('username');
+			$user->email = $form->validated('email');
+			$user->group = $form->validated('group');
 
-		if ($form->validation()->run())
-		{
-			if (View_Admin_Users::process_form($form, $user))
+            if ($user->save())
 			{
 				Session::set_flash('success', 'User successfully updated.');
 				Response::redirect('admin/users');
@@ -57,13 +57,10 @@ class Controller_Admin_Users extends Controller_Admin
 			Response::redirect('admin/users/edit/'.$user->id);
 		}
 
-		$template = View::factory('template');
-		$template->title = 'Edit User - '.$user->username;
-		$template->content = View::factory('admin/users/edit')
-				->set('user', $user, false)
-				->set('form', $form, false)
-				->set('val', Validation::instance('edit_user'), false);
-		$this->response->body($template);
+		$this->title = 'Edit User - '.$user->username;
+		$this->data['user'] = $user;
+		$this->data['form'] = $form;
+
 
 		/*
 		  $this->template->title = 'Edit article';
@@ -153,7 +150,8 @@ class Controller_Admin_Users extends Controller_Admin
 	 *
 	 */
 
-	publiC function action_delete($id = null) {
+	publiC function action_delete($id = null)
+	{
 		$user = Model_User::find($id);
 
 		if ($user and $user->delete())
@@ -166,7 +164,8 @@ class Controller_Admin_Users extends Controller_Admin
 			Session::set_flash('error', 'Something went wrong, please try again!');
 		}
 
-		Response::redirect('admin/users/index');
+		//TODO keep the same filter by checking the uri segment
+		Response::redirect('admin/users');
 	}
 
 }

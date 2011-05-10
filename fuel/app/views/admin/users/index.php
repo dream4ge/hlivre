@@ -13,6 +13,8 @@
 	<?php echo Html::anchor('admin/users/index/Users', 'Users'); ?>
 	&middot;
 	<?php echo Html::anchor('admin/users/index/Administrators', 'Administrators'); ?>
+	&middot;
+	<?php echo Html::anchor('admin/users/index/Moderators', 'Moderators'); ?>
 </div>
 
 <?php if ($total_users > 0): ?>
@@ -31,11 +33,10 @@
 	foreach ($users as $user): ?>
 	<tr>
 		<td><?php echo $user->id; ?></td>
-        <td><?php echo $user->username; ?></td>
+        <td><?php echo Html::anchor('admin/users/edit/'.$user->id, $user->username); ?></td>
         <td><?php echo $user->email; ?></td>
         <td><?php echo $user->group; ?></td>
         <td width="11%">
-			<?php echo Html::anchor('admin/users/edit/'.$user->id, 'edit'); ?> /
      		<?php echo Html::anchor('admin/users/delete/'.$user->id, 'delete'); ?>
 		</td>
 	</tr>
@@ -47,11 +48,11 @@
 
 <?php else: ?>
 <div class="message" id="notice">
-	<?php if (!$show): ?>
+	<?php if (!$filter): ?>
 	<span>There are no users at all, which is quite outstanding because you're one! Right? 
 	<?php echo Html::anchor('admin/users/add', 'Add a new User'); ?>.</span>
 	<?php else: ?>
-	<span>There are no <?php echo Inflector::singularize($show); ?> users. 
+	<span>There are no <?php echo $filter; ?>. 
 		<?php echo Html::anchor('admin/users/add', 'Add a new User'); ?>.</span>
 	<?php endif; ?>
 </div>

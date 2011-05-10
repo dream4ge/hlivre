@@ -105,6 +105,13 @@ class Model_User_Validation
 
 	}
 
+	public static function edit($user)
+	{
+		return Fieldset::factory('edit_user')
+				->add_model('Model_User_Validation', $user, 'set_edit_form')
+				->repopulate();
+	}
+
 	//FIXME
 	public static function set_edit_form(Fieldset $form, $user = null)
 	{
@@ -120,7 +127,9 @@ class Model_User_Validation
 				static::get_common_rules('email'));
 
 		//FIXME
-		$test_groups = array_merge(array('Select'), Auth::group()->get_group_names());
+		$test_groups = Auth::group()->get_group_names();
+		$test_groups[200] = 'super';
+		print_r($test_groups);
 		$form->add('group', 'Group',
 				array(	'type' => 'select',
 						'options' => $test_groups,

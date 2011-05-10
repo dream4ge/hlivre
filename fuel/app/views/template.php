@@ -10,7 +10,7 @@
             <!-- Menu -->
             <ul class="menu">
 				<?php if (Auth::check()): ?>
-					<li><?php echo Html::anchor('notes', 'My Notes'); ?></li>
+					<li><?php echo Html::anchor('user/notes', 'My Notes'); ?></li>
 					<li><?php echo Html::anchor('home/logout', 'Logout'); ?></li>
 				<?php else: ?>
 					<li><div class="wrap"><?php echo Html::anchor('home/login', 'Login'); ?></div></li>

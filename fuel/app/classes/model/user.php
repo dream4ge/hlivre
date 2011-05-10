@@ -23,6 +23,22 @@ class Model_User extends Orm\Model
 		}
 	}
 
+	/**
+	 * Orm call to get all users from this group
+	 * @return type array users from this group
+	 */
+	public function get_users_by_group($group = 'all', $offset = 0, $limit = 10)
+	{
+		$options = array('offset' => $offset, 'limit' => $limit);
+
+		if ($group !== 'all')
+		{
+			$options['where'] = array(array('group', '=', $group));
+		}
+
+		return Model_User::find('all', $options);
+	}
+
 	/*
 	  public static function _validation_rules($field, $update = false)
 	  {

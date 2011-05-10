@@ -49,8 +49,8 @@ a:hover, a:focus {
 /* -- Text elements -- */
 /* ------------------- */
 p {
-	margin: 10px 30px;
-    padding: 0px 6px 0px 6px;
+	/* margin: 10px 30px;
+    padding: 0px 6px 0px 6px; */
 }
 
 em, dfn, blockquote, address {font-style: italic;}
@@ -186,30 +186,29 @@ caption {
 }        
     /* --     Main      -- */
 	/* ------------------- */
-	.content #main {
+	.content div#main {
 		width: 68%;
 		/* width: 650px; */
-		padding-right: 20px;
+		margin: 20px 30px;
 		float: left;
 		display: inline;
 	}
-		.content #main h2 {
-			margin: 20px 30px;
-			padding: 2px 10px 2px 10px;
+		.content div#main h2 {
+			padding: 6px 10px 6px 10px;
 			border-left: 4px solid #FA8F6F;
 		}
 	
 	/* --    Sidebar    -- */
 	/* ------------------- */	
-	.content #sidebar {
-		width: 28%;
+	.content div#sidebar {
+		width: 25%;
 		/* width: 230px; */
         border: 1px solid black;
 		float: right;
 		display: inline;
 	}	
 	
-	.content #sidebar .widget {
+	.content div#sidebar .widget {
 		border: 1px dashed #ddd;
 		background-color: #00e; /*FIXME*/
 	}
