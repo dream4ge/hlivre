@@ -1,11 +1,9 @@
 <?php
 
-class Controller_User extends Controller_Template {
+abstract class Controller_User extends Controller_Template {
 
 	protected $user_id = null;
-	//TODO
-	//protected $user_group = null;
-	
+
     public function before()
     {
         parent::before();
@@ -16,7 +14,7 @@ class Controller_User extends Controller_Template {
 
             $this->user_id = $user[1];
 			//TODO
-			//$this->user_group = ...
+			//$this->user_team = ...
         }
 		else
 		{

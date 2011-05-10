@@ -1,6 +1,6 @@
 <?php
 
-class Controller_Admin extends Controller_Template
+abstract class Controller_Admin extends Controller_Template
 {
 	protected $user_id = null;
 	//TODO test
@@ -21,8 +21,6 @@ class Controller_Admin extends Controller_Template
 
             $this->user_id = $user[1];
 			$this->user_group = Auth::group()->get_name($user_groups[0][1]);
-
-
 		}
 		else
 		{

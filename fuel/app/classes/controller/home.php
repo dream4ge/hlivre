@@ -68,7 +68,7 @@ class Controller_Home extends Controller_Template {
 								$form->validated('password')))
             {
 				Session::set_flash('user', 'Welcome back, '. $form->validated('username').' !');
-                Response::redirect('/');
+                Response::redirect('admin/dashboard');
             }
 			else
 			{
