@@ -47,20 +47,6 @@
         <div class="content">
 
             <div id="main">
-
-                <!-- Test acl message -->
-				<?php
-				/*
-				  $user_groups = Auth::get_groups();
-				  if ($user_groups && Auth::acl()->has_access(array('comments', array('read')), $user_groups[0])) {
-				  echo '<div class="message success">Successfully authenticated as an user.</div>';
-				  } else {
-				  echo '<div class="message notice">Please log-in.</div>';
-				  }
-
-				 */
-				?>
-
                 <!-- Main content -->
 				<?php echo $content; ?>
             </div>
