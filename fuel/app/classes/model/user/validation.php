@@ -7,7 +7,6 @@ class Model_User_Validation
 			array('required'),
 			array('min_length', 3),
 			array('max_length', 20),
-			array('trim'),
 			array('valid_string',
 				array('alpha', 'numeric', 'dashes', 'dots')),
 		),
@@ -15,9 +14,8 @@ class Model_User_Validation
 			array('required'),
 			array('min_length', 3),
 			array('max_length', 20),
-			array('trim'),
 			array('valid_string',
-				array('alpha', 'numeric', 'spaces', 'punctuation', 'dashes'))
+				array('alpha', 'numeric', 'punctuation', 'dashes'))
 		),
 		'email' => array(
 			array('required'),
@@ -63,6 +61,50 @@ class Model_User_Validation
 		$form->add('submit', null,
 				array(	'type' => 'submit',
 						'value' => 'Login'));
+	}
+
+	public static function add()
+	{
+		return Fieldset::factory('add_user')
+				->add_model('Model_User_Validation', null, 'set_add_form')
+				->repopulate();
+	}
+
+	public static function set_add_form(Fieldset $form, $user = null)
+	{
+		$form->add('username', '* Username <em class="validation-info">(3 to 20 caracters long)</em>',
+				array(	'id' => 'username',
+						'type' => 'text',
+						'value' => !empty($user) ? $user->username : ''),
+				array_merge(
+						static::get_common_rules('username'),
+						array(array('unique', 'username'))));
+
+
+		$form->add('password', '* Password <em class="validation-info">(3 to 20 caracters long)</em>',
+				array(	'id' => 'password',
+						'type' => 'password',
+						'value' => !empty($user) ? $user->password : ''),
+				static::get_common_rules('password'));
+
+		$form->add('email', '* Email Address <em class="validation-info">(valid)</em>',
+				array(	'id' => 'email',
+						'type' => 'text',
+						'value' => !empty($user) ? $user->email : ''),
+				array_merge(
+						static::get_common_rules('email'),
+						array(array('unique', 'email'))));
+
+		$form->add('group', 'Group',
+				array(	'type' => 'select',
+						'options' => Auth::group()->get_group_names(),
+						'value' => !empty($user) ? $user->group : null),
+				static::get_common_rules('group'));
+
+		$form->add('submit', null,
+				array(	'type' => 'submit',
+						'value' => 'Sign Up'));
+
 	}
 
 	public static function signup()
@@ -151,6 +193,7 @@ class Model_User_Validation
 		}
     }
 
+	//FIXME check group names
 	public function _validation_valid_group($value)
     {
 		 return (Auth::group()->get_name($value) !== null);

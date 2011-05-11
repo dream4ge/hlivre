@@ -30,6 +30,33 @@ class Controller_Admin_Users extends Controller_Admin
 						$group, Pagination::$offset, Pagination::$per_page);
 	}
 
+
+	public function action_add()
+	{
+		$form = Model_User_Validation::add();
+        if ($form->validation()->run())
+        {
+            if (Auth::instance()
+					->create_user(	$form->validated('username'),
+									$form->validated('password'),
+									$form->validated('email'),
+									$form->validated('group')))
+			{
+				Session::set_flash('success', 'User successfully added.');
+				Response::redirect('admin/users');
+			}
+			else
+			{
+				Session::set_flash('error', 'Something went wrong, please try again!');
+			}
+
+			Response::redirect('admin/users/add');
+		}
+
+		$this->title = 'Add User';
+		$this->data['form'] = $form;
+	}
+
 	public function action_edit($id)
 	{
 		if (empty($id) || !$user = Model_User::find($id))
@@ -61,6 +88,7 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->data['user'] = $user;
 		$this->data['form'] = $form;
 	}
+
 
 	//TODO threat notes dependencies
 	publiC function action_delete($id = null)
