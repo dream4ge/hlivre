@@ -10,7 +10,6 @@ class Model_User_Validation
 			array('trim'),
 			array('valid_string',
 				array('alpha', 'numeric', 'dashes', 'dots')),
-		//array('unique', 'user.username')
 		),
 		'password' => array(
 			array('required'),
@@ -26,12 +25,11 @@ class Model_User_Validation
 			array('max_length', 80),
 			array('trim'),
 			array('valid_email'),
-		//array('unique', 'user.email')
 		),
 		'group' => array(
 			array('required'),
 			array('trim'),
-		//need to be in array Config::get('simpleauth.groups')
+			array('valid_group'),
 		)
 	);
 
@@ -112,7 +110,7 @@ class Model_User_Validation
 				->repopulate();
 	}
 
-	//FIXME
+	//FIXME add unique rule
 	public static function set_edit_form(Fieldset $form, $user = null)
 	{
 		$form->add('username', 'Username',
@@ -126,17 +124,11 @@ class Model_User_Validation
 						'value' => !empty($user) ? $user->email : ''),
 				static::get_common_rules('email'));
 
-		//FIXME
-		$test_groups = Auth::group()->get_group_names();
-		$test_groups[200] = 'super';
-		print_r($test_groups);
 		$form->add('group', 'Group',
 				array(	'type' => 'select',
-						'options' => $test_groups,
+						'options' => Auth::group()->get_group_names(),
 						'value' => !empty($user) ? $user->group : null),
-				array_merge(
-						static::get_common_rules('group'),
-						array('in_array', Auth::group()->get_group_names())));
+				static::get_common_rules('group'));
 
 		$form->add('submit', null,
 				array(	'type' => 'submit',
@@ -158,5 +150,10 @@ class Model_User_Validation
 			return ($count == 0);
 		}
     }
+
+	public function _validation_valid_group($value)
+    {
+		 return (Auth::group()->get_name($value) !== null);
+	}
 
 }
